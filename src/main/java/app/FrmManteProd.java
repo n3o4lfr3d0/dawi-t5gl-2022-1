@@ -7,6 +7,7 @@ import java.awt.HeadlessException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import model.Categoria;
 import model.Producto;
@@ -26,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
+import javax.swing.JTable;
 
 public class FrmManteProd extends JFrame {
 
@@ -38,6 +40,9 @@ public class FrmManteProd extends JFrame {
 	private JTextField txtDescripcion;
 	private JTextField txtStock;
 	private JTextField txtPrecio;
+	private JTable tblSalida;
+	
+	DefaultTableModel modelo = new DefaultTableModel();
 
 	/**
 	 * Launch the application.
@@ -61,7 +66,7 @@ public class FrmManteProd extends JFrame {
 	public FrmManteProd() {
 		setTitle("Mantenimiento de Productos");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 390);
+		setBounds(100, 100, 450, 577);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -152,6 +157,18 @@ public class FrmManteProd extends JFrame {
 		});
 		btnBuscar.setBounds(324, 63, 89, 23);
 		contentPane.add(btnBuscar);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 358, 414, 169);
+		contentPane.add(scrollPane_1);
+		
+		tblSalida = new JTable();
+		scrollPane_1.setViewportView(tblSalida);
+		tblSalida.setModel(modelo);
+		modelo.addColumn("Código");
+		modelo.addColumn("Nombre");
+		modelo.addColumn("Categoría");
+		modelo.addColumn("Proveedor");
 
 		llenaCombo();
 	}
@@ -243,11 +260,19 @@ public class FrmManteProd extends JFrame {
 		
 		// Mostrar el listado en el txt Area
 		for (Producto pr : lstProductos) {
+			// muestra en el textArea
 			imprimir("Id Producto..: " + pr.getId_prod());
 			imprimir("Nombre.......: " + pr.getDes_prod());
-			imprimir("Categoria....: " + pr.getIdcategoria() + "-" + pr.getCategoria().getDescripcion());
-			imprimir("Proveedor....: " + pr.getIdprovedor() + "-" + pr.getProveedor().getNombre_rs());
-			imprimir("------------------------------------------------");		
+			imprimir("Categoria....: " + 
+					pr.getIdcategoria() + "-" + pr.getCategoria().getDescripcion());
+			imprimir("Proveedor....: " + 
+					pr.getIdprovedor() + "-" + pr.getProveedor().getNombre_rs());
+			imprimir("------------------------------------------------");
+			// muestra en la tabla
+			Object datos [] = {pr.getId_prod(), pr.getDes_prod(), 
+					pr.getIdcategoria() + "-" + pr.getCategoria().getDescripcion(),
+					pr.getIdprovedor() + "-" + pr.getProveedor().getNombre_rs()};
+			modelo.addRow(datos);
 		}		
 		// Cerrar
 		em.close();
@@ -279,5 +304,4 @@ public class FrmManteProd extends JFrame {
 		}
 		em.close();		
 	}
-	
 }

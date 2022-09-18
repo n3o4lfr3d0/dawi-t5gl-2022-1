@@ -3,7 +3,7 @@ DROP DATABASE IF EXISTS ciberfarmadawi2;
 -- creamos la bd
 CREATE DATABASE ciberfarmadawi2;
 -- activamos la bd
-USE ciberfarmadawi;
+USE ciberfarmadawi2;
 
 create table tb_tipos(
 idtipo		int not null primary key,
